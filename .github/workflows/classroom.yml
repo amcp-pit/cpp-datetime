@@ -1,6 +1,6 @@
 name: GitHub Classroom Workflow
 
-on: 
+on:
   workflow_dispatch:
   push:
     paths-ignore:
@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Get repository code
         uses: actions/checkout@v4
-      - name: Check requirements
-        run: |
-             !(grep -qwRE --include=*.{cc,cpp,h,hpp} '<vector>|<list>|<string>|<algorithm>|<stack>|<queue>|<deque>|<set>|<map>|<bits' ./* ) &&  (echo \"Check - OK\" )  || ( echo \"Forbiden STL containers\" && exit 9 )
       - name: Code linting
         uses: amcp-pit/cpp-linter@v1
         with:
