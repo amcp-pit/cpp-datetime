@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-pedantic-errors -gdwarf-4 -std=c++17
+CFLAGS=-pedantic-errors -Wall -Wextra -Werror -gdwarf-4 -std=c++20
 LDFLAGS=
 SOURCES=main.cc datetime.cpp
 OBJECTS=$(SOURCES:.cpp=.o)

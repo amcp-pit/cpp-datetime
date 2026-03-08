@@ -4,7 +4,7 @@
 
 ## Требования к реализации
 * Название классов: `date`, `time`, `datetime`, `timediff`
-* Заголовочный файл: `datetime.h`
+* Заголовочный файл: `datetime.hpp`
 * Файл реализации: `datetime.cpp`
 * Пространство имен `DateTime`
 * Файл `main.cc` не менять.
@@ -38,20 +38,6 @@ void add_minutes(int nb_minutes);  // Добавить заданное коли
 void add_seconds(int nb_seconds);  // Добавить заданное количество секунд
 ```
 
-### Внешняя функция
-
-```c++
-std::string to_string(const time&);  // Преобразовать в строку в формате "HH:mm:ss"
-```
-
-#### Формат строки
-
-| Спецификатор | Описание                              |
-| ------------ | ------------------------------------- |
-| HH           | Часы в 24-часовом формате от 00 до 23 |
-| mm           | Минуты от 00 до 59                    |
-| ss           | Секунды от 00 до 59                   |
-
 ### Поддерживаемые операторы
 ```c++
 time tm1 = time(12, 50, 0);
@@ -67,6 +53,20 @@ time tm3 = tm1;
 | time > time  | Greater operator       | `assert(tm2 > tm3);`             |
 | time >= time | Greater equal operator | `assert(tm2 >= tm3);`            |
 | time - time  | Minus operator         | `timediff ts1 = tm2 - tm1;`<br>`assert(ts.minutes() == 50);`<br>`assert(ts.hours() == 0);` |
+
+### Внешняя функция
+
+```c++
+std::string to_string(const time&);  // Преобразовать в строку в формате "HH:mm:ss"
+```
+
+#### Формат строки
+
+| Спецификатор | Описание                              |
+| ------------ | ------------------------------------- |
+| HH           | Часы в 24-часовом формате от 00 до 23 |
+| mm           | Минуты от 00 до 59                    |
+| ss           | Секунды от 00 до 59                   |
 
 ## Класс date
 Класс для представления даты. 
@@ -97,20 +97,6 @@ date prev() const;           // Получить дату для предыду�
 static bool is_leapyear(int year); // Проверка года на високосность 
 ```
 
-### Внешняя функция
-
-```c++
-std::string to_string(const date&);  // Преобразовать в строку в формате "yyyy.MM.dd"
-```
-
-#### Формат строки
-
-| Спецификатор | Описание                               |
-| ------------ | -------------------------------------- |
-| yyyy         | Год                                    |
-| MM           | Месяц от 01 до 12                      |
-| dd           | День месяца от 01 до 31                |
-
 ### Поддерживаемые операторы
 ```c++
 date dt1 = date(2025, 2, 11);
@@ -130,6 +116,20 @@ date dt3 = dt1;
 | date++       | Post-increment operator | `dt1++; assert(dt1 == dt2);`    |
 | --date       | Pre-decrement operator  | `assert(--dt2 == dt3);`         |
 | date--       | Post-decrement operator | dt2--;`assert(dt2 == dt3);`     |
+
+### Внешняя функция
+
+```c++
+std::string to_string(const date&);  // Преобразовать в строку в формате "yyyy.MM.dd"
+```
+
+#### Формат строки
+
+| Спецификатор | Описание                               |
+| ------------ | -------------------------------------- |
+| yyyy         | Год                                    |
+| MM           | Месяц от 01 до 12                      |
+| dd           | День месяца от 01 до 31                |
 
 
 ## Класс datetime
@@ -170,23 +170,6 @@ void add_seconds(int nb_seconds);  // Добавить заданное коли
 static bool is_leapyear(int year); // Проверка года на високосность 
 ```
 
-### Внешняя функция
-
-```c++
-std::string to_string(const datetime&);  // Преобразовать в строку в формате "yyyy.MM.dd HH:mm:ss"
-```
-
-#### Формат строки
-
-| Спецификатор | Описание                               |
-| ------------ | -------------------------------------- |
-| yyyy         | Год                                    |
-| MM           | Месяц от 01 до 12                      |
-| dd           | День месяца от 01 до 31                |
-| HH           | Часы в 24-часовом формате от 00 до 23  |
-| mm           | Минуты от 00 до 59                     |
-| ss           | Секунды от 00 до 59                    |
-
 ### Поддерживаемые операторы
 ```c++
 datetime dt1 = datetime(2025, 2, 11, 12, 0, 0);
@@ -207,6 +190,42 @@ timediff ts(1, 2, 1, 0);
 | datetime - ts        | Minus operator         | assert(dt2 - ts == dt1)       |
 | datetime + ts        | Plus operator          | assert(dt1 + ts == dt2)       |
 
+### Внешняя функция
+
+Преобразовать в строку в заданном формате (функция с параметром по умолчанию):
+
+```c++
+std::string to_string(const datetime&, const char* format = "%Y.%m.%d %H:%M:%S");  
+```
+
+Строка формата состоит из нуля или более спецификаторов преобразования и обычных символов (кроме `%`). 
+Все обычные символы, включая завершающий нулевой символ, копируются в выходную строку без изменений. 
+Каждая спецификация преобразования начинается с символа `%`, за которым следует символ, определяющий поведение спецификатора. 
+Доступны следующие спецификаторы формата.
+
+| Спецификатор | Описание                                                        |
+| ------------ | --------------------------------------------------------------- |
+| %Y           | Год в виде десятичного числа                                    |
+| %y           | Последние две цифры года (year without century)                 |
+| %m           | Месяц от 01 до 12 (as a zero-padded number)                     |
+| %d           | День месяца от 01 до 31 (as a zero-padded number)               |
+| %b           | Сокращенное название месяца                                     |
+| %B           | Полное название месяца                                          |
+| %a           | Сокращенное название дня недели                                 |
+| %A           | Полное название дня недели                                      |
+| %H           | Часы в 24-часовом формате от 00 до 23 (as a zero-padded number) |
+| %M           | Минуты от 00 до 59 (as a zero-padded number)                    |
+| %S           | Секунды от 00 до 59 (as a zero-padded number)                   |
+
+Примечание: если после символа `%` был указан неподдерживаемый спецификатор формата, то вывести символ `%` и следующий за ним символ без изменений.
+
+Названия месяцев: `January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`
+  
+Сокращенные названия месяцев: `Jan`, `Feb`, `Mar`, `Apr`, `May`, `Jun`, `Jul`, `Aug`, `Sep`, `Oct`, `Nov`, `Dec`
+
+Названия дней недели: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday` 
+
+Сокращенные названия дней недели: `Mon`, `Tue`, `Wed`, `Thu`, `Fri`, `Sat`, `Sun` 
 
 ## Класс timediff
 Класс для представления разности дат и времени. 
@@ -240,14 +259,13 @@ timediff ts2(1, 0, 4, 0);
 timediff ts3 = ts1;
 ```
 
-| Оператор             | Описание               | Пример использования          |
-| -------------------- | ---------------------- | ----------------------------- |
-| timediff == timediff | Equality operator      | assert(ts1 == ts3);           |
-| timediff != timediff | Inequality operator    | assert(ts1 != ts2);           |
-| timediff < timediff  | Less operator          | assert(ts2 < ts1);            |
-| timediff <= timediff | Less equal operator    | assert(ts2 <= ts1);           |
-| timediff > timediff  | Greater operator       | assert(ts1 > ts2);            |
-| timediff >= timediff | Greater equal operator | assert(ts1 >= ts2);           |
-| timediff >= timediff | Greater equal operator | assert(ts1 >= ts2);           |
-| timediff + timediff  | Plus operator          | assert(ts1 >= ts2);           |
-| timediff - timediff  | Minus operator         | assert(ts1 >= ts2);           |
+| Оператор             | Описание               | Пример использования  |
+| -------------------- | ---------------------- | --------------------- |
+| timediff == timediff | Equality operator      | assert(ts1 == ts3);   |
+| timediff != timediff | Inequality operator    | assert(ts1 != ts2);   |
+| timediff < timediff  | Less operator          | assert(ts2 < ts1);    |
+| timediff <= timediff | Less equal operator    | assert(ts2 <= ts1);   |
+| timediff > timediff  | Greater operator       | assert(ts1 > ts2);    |
+| timediff >= timediff | Greater equal operator | assert(ts1 >= ts2);   |
+| timediff + timediff  | Plus operator          | ts3 = ts1 + ts2;      |
+| timediff - timediff  | Minus operator         | ts3 = ts2 - ts1;      |

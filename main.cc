@@ -2,7 +2,7 @@
 #include <string>
 #include <cassert>
 #include <stdexcept>
-#include "datetime.h"
+#include "datetime.hpp"
 
 using namespace DateTime;
 
@@ -19,6 +19,7 @@ void TestTime();
 void TestDate();
 void TestDateTime();
 void TestTimediff();
+void TestDateTimeFormat();
 
 void TestAll() {
 	try {
@@ -26,6 +27,7 @@ void TestAll() {
 		TestDate();
 		TestDateTime();
 		TestTimediff();
+		TestDateTimeFormat();
 	}
 	catch (...) {
 		assert(false); // unknown exception
@@ -199,6 +201,7 @@ void TestTime() {
 */
 
 void TestDate() {
+
 	{   // Valid date 2025.02.01
 		DateTime::date dt(2025, 2, 1);
 		assert(2025 == dt.year());
@@ -220,7 +223,6 @@ void TestDate() {
 			assert(false);
 		}
 	}
-
 
 	{   // Invalid dates. Throw invalid argument exception
 		try {
@@ -506,6 +508,7 @@ void TestDate() {
 */
 
 void TestDateTime() {
+
 	{   // Valid date 2025.02.01
 		DateTime::datetime dt(2025, 2, 1);
 		assert(2025 == dt.year());
@@ -708,7 +711,6 @@ void TestDateTime() {
 			assert(res == false);
 		}
 	}
-
 
 	{   // Valid day 29 for february. Throw invalid argument exception
 		DateTime::datetime dt(2000, 2, 29);
@@ -1150,4 +1152,166 @@ void TestTimediff() {
 	}
 
 	std::cout << "TestTimeDiff OK" << std::endl;
+}
+
+void TestDateTimeFormat() {
+
+	{   // January
+		DateTime::datetime dt(2026, 1, 1);
+		assert(std::string("Jan 01.01.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("January 01.01.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // February
+		DateTime::datetime dt(2026, 2, 1);
+		assert(std::string("Feb 01.02.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("February 01.02.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // March
+		DateTime::datetime dt(2026, 3, 1);
+		assert(std::string("Mar 01.03.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("March 01.03.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // April
+		DateTime::datetime dt(2026, 4, 1);
+		assert(std::string("Apr 01.04.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("April 01.04.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // May
+		DateTime::datetime dt(2026, 5, 1);
+		assert(std::string("May 01.05.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("May 01.05.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // June
+		DateTime::datetime dt(2026, 6, 1);
+		assert(std::string("Jun 01.06.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("June 01.06.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // July
+		DateTime::datetime dt(2026, 7, 1);
+		assert(std::string("Jul 01.07.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("July 01.07.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // August
+		DateTime::datetime dt(2026, 8, 1);
+		assert(std::string("Aug 01.08.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("August 01.08.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // September
+		DateTime::datetime dt(2026, 9, 1);
+		assert(std::string("Sep 01.09.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("September 01.09.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // October
+		DateTime::datetime dt(2026, 10, 1);
+		assert(std::string("Oct 01.10.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("October 01.10.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // November
+		DateTime::datetime dt(2026, 11, 1);
+		assert(std::string("Nov 01.11.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("November 01.11.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // December
+		DateTime::datetime dt(2026, 12, 1);
+		assert(std::string("Dec 01.12.2026") == DateTime::to_string(dt, "%b %d.%m.%Y"));
+		assert(std::string("December 01.12.2026") == DateTime::to_string(dt, "%B %d.%m.%Y"));
+	}
+
+	{   // Monday
+		DateTime::datetime dt(2026, 3, 9);
+		assert(std::string("Mon Mar 09 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Monday March 09 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Tuesday
+		DateTime::datetime dt(2026, 3, 10);
+		assert(std::string("Tue Mar 10 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Tuesday March 10 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Wednesday
+		DateTime::datetime dt(2026, 3, 11);
+		assert(std::string("Wed Mar 11 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Wednesday March 11 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Thursday
+		DateTime::datetime dt(2026, 3, 12);
+		assert(std::string("Thu Mar 12 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Thursday March 12 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Friday
+		DateTime::datetime dt(2026, 3, 13);
+		assert(std::string("Fri Mar 13 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Friday March 13 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Saturday
+		DateTime::datetime dt(2026, 3, 14);
+		assert(std::string("Sat Mar 14 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Saturday March 14 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   // Sunday
+		DateTime::datetime dt(2026, 3, 15);
+		assert(std::string("Sun Mar 15 2026") == DateTime::to_string(dt, "%a %b %d %Y"));
+		assert(std::string("Sunday March 15 2026") == DateTime::to_string(dt, "%A %B %d %Y"));
+	}
+
+	{   
+		DateTime::datetime dt(2026, 3, 15);
+		assert(std::string("15.03.26 %* test") == DateTime::to_string(dt, "%d.%m.%y %* test"));
+		assert(std::string("unknown %q") == DateTime::to_string(dt, "unknown %q"));
+	}
+
+	{   
+		DateTime::datetime dt(2026, 3, 1);
+		assert(std::string("2026.03.01 00:00:00") == DateTime::to_string(dt));
+		assert(std::string("01-03-2026 00:00:00") == DateTime::to_string(dt, "%d-%m-%Y %H:%M:%S"));
+		assert(std::string("2026.03.01") == DateTime::to_string(dt, "%Y.%m.%d"));
+		assert(std::string("26.03.01") == DateTime::to_string(dt, "%y.%m.%d"));
+		assert(std::string("Current date: 2026.03.01") == DateTime::to_string(dt, "Current date: %Y.%m.%d"));
+		assert(std::string("01-03-26") == DateTime::to_string(dt, "%d-%m-%y"));
+		assert(std::string("Sun Mar 01 00:00:00 2026") == DateTime::to_string(dt, "%a %b %d %H:%M:%S %Y"));
+		assert(std::string("Sunday March 01 00:00:00 2026") == DateTime::to_string(dt, "%A %B %d %H:%M:%S %Y"));
+	}
+
+	{   
+		DateTime::datetime dt(2026, 2, 28, 9, 5, 0);
+		assert(std::string("2026.02.28 09:05:00") == DateTime::to_string(dt));
+		assert(std::string("28-02-2026 09:05:00") == DateTime::to_string(dt, "%d-%m-%Y %H:%M:%S"));
+		assert(std::string("2026.02.28") == DateTime::to_string(dt, "%Y.%m.%d"));
+		assert(std::string("26.02.28") == DateTime::to_string(dt, "%y.%m.%d"));
+		assert(std::string("Current date: 2026.02.28") == DateTime::to_string(dt, "Current date: %Y.%m.%d"));
+		assert(std::string("02/28/26") == DateTime::to_string(dt, "%m/%d/%y"));
+		assert(std::string("28.02.2026 09:05") == DateTime::to_string(dt, "%d.%m.%Y %H:%M"));
+		assert(std::string("Sat Feb 28 09:05:00 2026") == DateTime::to_string(dt, "%a %b %d %H:%M:%S %Y"));
+		assert(std::string("Saturday February 28 09:05:00 2026") == DateTime::to_string(dt, "%A %B %d %H:%M:%S %Y"));
+	}
+
+	{   
+		DateTime::datetime dt(2026, 12, 31, 23, 59, 0);
+		assert(std::string("2026.12.31 23:59:00") == DateTime::to_string(dt));
+		assert(std::string("31-12-2026 23:59:00") == DateTime::to_string(dt, "%d-%m-%Y %H:%M:%S"));
+		assert(std::string("2026.12.31") == DateTime::to_string(dt, "%Y.%m.%d"));
+		assert(std::string("Current date: 2026.12.31") == DateTime::to_string(dt, "Current date: %Y.%m.%d"));
+		assert(std::string("12/31/26") == DateTime::to_string(dt, "%m/%d/%y"));
+		assert(std::string("31.12.2026 23:59") == DateTime::to_string(dt, "%d.%m.%Y %H:%M"));
+		assert(std::string("Thu Dec 31 23:59:00 2026") == DateTime::to_string(dt, "%a %b %d %H:%M:%S %Y"));
+		assert(std::string("Thursday December 31 23:59:00 2026") == DateTime::to_string(dt, "%A %B %d %H:%M:%S %Y"));
+	}
+
+	std::cout << "TestDateTimeFormat OK" << std::endl;
 }

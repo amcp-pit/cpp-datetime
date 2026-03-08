@@ -18,20 +18,23 @@ jobs:
     steps:
       - name: Get repository code
         uses: actions/checkout@v4
+      - name: Check requirements
+        run: |
+             !(grep -qwRE --include=*.{cc,cpp,h,hpp} '<vector>|<list>|<string>|<algorithm>|<stack>|<queue>|<deque>|<set>|<map>|<bits' ./* ) &&  (echo \"Check - OK\" )  || ( echo \"Forbiden STL containers\" && exit 9 )
+      - name: Code linting
+        uses: amcp-pit/cpp-linter@v1
+        with:
+          extra-args-before: '-xc++'
+          extra-args: '-std=c++20'
+          after-args: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
       - name: Build
         run: |
              make
-             !(grep -qwRE --include=*.{cc,cpp,h} '<vector>|<list>|<algorithm>|<stack>|<queue>|<deque>|<set>|<map>' ./* ) &&  (echo \"Build...\" )  || ( echo \"Forbiden STL containers\" && exit 9 )
       - name: Autograding
         uses: amcp-pit/autograding@v1
       - name: Memory leaks
         run: |
              valgrind --tool=memcheck --leak-check=full --undef-value-errors=no --error-exitcode=111 ./datetime
-      - name: Code linting
-        uses: amcp-pit/cpp-linter@v1
-        with:
-          extra-args-before: '-xc++'
-          after-args: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
       - name: Checkout
         uses: actions/checkout@v4
       - name: CPD
